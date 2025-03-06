@@ -50,7 +50,7 @@ var formatters = map[string][]string{
 
 // Non-Go formatters
 var otherFormatters = map[string][]string{
-	".rs": []string{"rustfmt", "--emit", "stdout"},
+	".rs": []string{"rustfmt", "--emit", "stdout", "--quiet"},
 	".py": []string{"yapf"},
 	".jl": []string{"/Users/ilanpillemer/Repos/github/acme-jl/cmd/jlfmt2/bin/juliafmt"},
 	".gleam": []string{"gleam", "format"},
@@ -58,7 +58,7 @@ var otherFormatters = map[string][]string{
 }
 
 func main() {
-	log.Printf("starting patch version with [%v]\n", otherFormatters)
+	log.Printf("starting patch version 060325 with [%v]\n", otherFormatters)
 	flag.Parse()
 	if *gofmt {
 		for suffix, formatter := range otherFormatters {
