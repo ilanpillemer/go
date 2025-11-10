@@ -54,6 +54,8 @@ var otherFormatters = map[string][]string{
 	".py": []string{"yapf"},
 	".jl": []string{"/Users/ilanpillemer/Repos/github/acme-jl/cmd/jlfmt2/bin/juliafmt"},
 	".gleam": []string{"gleam", "format"},
+	".fnl": []string{"fnlfmt"},
+	".janet": []string{"/Users/ilanpillemer/bin/janetfmt"},
 	//".gleam": []string{"cat", "|", "gleam","format","--stdin"},
 }
 
