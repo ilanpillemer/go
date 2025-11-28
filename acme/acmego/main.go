@@ -52,15 +52,16 @@ var formatters = map[string][]string{
 var otherFormatters = map[string][]string{
 	".rs": []string{"rustfmt", "--emit", "stdout", "--quiet"},
 	".py": []string{"yapf"},
-	".jl": []string{"/Users/ilanpillemer/Repos/github/acme-jl/cmd/jlfmt2/bin/juliafmt"},
+	".jl": []string{"/Users/ilan.pillemer@brambles.com/Repos/github/juliafmt/jlfmt2/bin/juliafmt"},
 	".gleam": []string{"gleam", "format"},
 	".fnl": []string{"fnlfmt"},
 	".janet": []string{"/Users/ilanpillemer/bin/janetfmt"},
+	".scm": []string{"schemat"},
 	//".gleam": []string{"cat", "|", "gleam","format","--stdin"},
 }
 
 func main() {
-	log.Printf("starting patch version 060325 with [%v]\n", otherFormatters)
+	log.Printf("starting patch version 120625 with [%v]\n", otherFormatters)
 	flag.Parse()
 	if *gofmt {
 		for suffix, formatter := range otherFormatters {
@@ -111,6 +112,9 @@ func reformat(id int, name string, formatter []string) {
 	var new []byte
 	if path.Base(exe) == "gleam" {
 	    hmmph := fmt.Sprintf("cat %s | %s format --stdin",name,exe)
+	  	new, err = exec.Command("bash","-c",hmmph).Output()
+	} else if path.Base(exe) == "schemat" {
+	    hmmph := fmt.Sprintf("cat %s | %s",name,exe)
 	  	new, err = exec.Command("bash","-c",hmmph).Output()
 	} else {
 	    new, err = exec.Command(exe, append(formatter[1:], name)...).Output()
