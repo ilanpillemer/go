@@ -57,6 +57,8 @@ var otherFormatters = map[string][]string{
 	".fnl": []string{"fnlfmt"},
 	".janet": []string{"/Users/ilanpillemer/bin/janetfmt"},
 	".scm": []string{"schemat"},
+	".awk": []string{"gawk", "--pretty-print=-", "-f"},
+	".hs": []string{"fourmolu"},
 	//".gleam": []string{"cat", "|", "gleam","format","--stdin"},
 }
 
@@ -115,6 +117,9 @@ func reformat(id int, name string, formatter []string) {
 	  	new, err = exec.Command("bash","-c",hmmph).Output()
 	} else if path.Base(exe) == "schemat" {
 	    hmmph := fmt.Sprintf("cat %s | %s",name,exe)
+	  	new, err = exec.Command("bash","-c",hmmph).Output()
+	} else if path.Base(exe) == "fourmolu" {
+	    hmmph := fmt.Sprintf("cat %s | %s --stdin-input-file %s",name,exe,name)
 	  	new, err = exec.Command("bash","-c",hmmph).Output()
 	} else {
 	    new, err = exec.Command(exe, append(formatter[1:], name)...).Output()
