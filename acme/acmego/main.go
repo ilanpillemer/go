@@ -52,13 +52,14 @@ var formatters = map[string][]string{
 var otherFormatters = map[string][]string{
 	".rs": []string{"rustfmt", "--emit", "stdout", "--quiet"},
 	".py": []string{"yapf"},
-	".jl": []string{"/Users/ilan.pillemer@brambles.com/Repos/github/juliafmt/jlfmt2/bin/juliafmt"},
+	".jl": []string{"juliafmt"},
 	".gleam": []string{"gleam", "format"},
 	".fnl": []string{"fnlfmt"},
-	".janet": []string{"/Users/ilanpillemer/bin/janetfmt"},
+	".janet": []string{"janetfmt"},
 	".scm": []string{"schemat"},
 	".awk": []string{"gawk", "--pretty-print=-", "-f"},
 	".hs": []string{"fourmolu"},
+	".lhs": []string{"lhs-format"},
 	//".gleam": []string{"cat", "|", "gleam","format","--stdin"},
 }
 
@@ -121,6 +122,11 @@ func reformat(id int, name string, formatter []string) {
 	} else if path.Base(exe) == "fourmolu" {
 	    hmmph := fmt.Sprintf("cat %s | %s --stdin-input-file %s",name,exe,name)
 	  	new, err = exec.Command("bash","-c",hmmph).Output()
+	} else if path.Base(exe) == "lhs-format" {
+	    // lhs-format reads from stdin and outputs to stdout
+	    cmd := exec.Command(exe)
+	    cmd.Stdin = strings.NewReader(string(old))
+	    new, err = cmd.Output()
 	} else {
 	    new, err = exec.Command(exe, append(formatter[1:], name)...).Output()
     }
